@@ -5,8 +5,10 @@ import main_basic
 import inspect                  # module with information about about objects such as functions
 import datetime                 # do not delete this module even though it seems unused. It is used with the 'exec' command.
 
-# Choose module that contains functions to log
+# Define modules to log (modules must be imported above)
 module = main_basic
+# TODO list of modules
+
 
 
 # Retrieve functions
@@ -29,19 +31,22 @@ print()
 i = 0
 for f in functions:
     args = inspect.getfullargspec(f).args
+    qualname = module.__name__ + "." + f.__qualname__
 
-    s_original = 'f_original' + str(i) + '=' + module.__name__ + "." + f.__qualname__       # str(i) is needed to create for every function an own original, otherwise it gets overwritten
+    s_original = 'f_original' + str(i) + '=' + qualname      # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
     exec(s_original)
 
-    s_args = '(' + ','.join(args) + ')'
+    s_arg_values = '(' + ','.join(args) + ')'
     s_arg_names = '"(' + ','.join(args) + ') ="'
+    s_qualname = '"' + qualname + '"'
+    s_signature = '"' + qualname + ','.join(args) + '"'
 
-    s_f_original = 'def f_monkey' + s_args + ':' + 'result = f_original' + str(i) + s_args + ';'
-    s_f_extend = 'print(' + "datetime.datetime.now()," + s_arg_names + "," + s_args + "," + '"' + "return =" + '"' + "," + "result" + "," + "type(result)" + ')'
+    s_f_original = 'def f_monkey' + s_arg_values + ':' + 'result = f_original' + str(i) + s_arg_values + ';'
+    s_f_extend = 'print(' + "datetime.datetime.now()," + s_qualname + "," + s_arg_names + "," + s_arg_values + "," + '"' + "return =" + '"' + "," + "result" + "," + "type(result)" + ')'
     s_f = s_f_original + s_f_extend
 
     exec(s_f)
-    s_replace = module.__name__ + "." + f.__qualname__ + ' = f_monkey'
+    s_replace = qualname + ' = f_monkey'
     exec(s_replace)
 
     i = i+1
@@ -51,8 +56,6 @@ for f in functions:
 # Test function calls
 module.print_example()
 module.A.add_numbers(0,3,5)
-
-
 
 
 

@@ -6,9 +6,7 @@ import inspect                  # module with information about about objects su
 import datetime                 # do not delete this module even though it seems unused. It is used with the 'exec' command.
 
 # Define modules to log (modules must be imported above)
-module = main_basic
-# TODO list of modules
-
+modules = [main_basic, main]
 
 
 # Retrieve functions
@@ -16,13 +14,14 @@ functions = []
 def traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
-            functions.append(elem[1])
+            tuple = (elem[1], module.__name__)
+            functions.append(tuple)
         if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tuple '__class__', since they are also of type 'class'
             traverse(elem[1])   # recursion to get nested classes
 
-traverse(module)
-#print(functions)
-
+for module in modules:
+    traverse(module)
+print(functions)
 
 
 
@@ -41,8 +40,8 @@ def format_arguments(args):
 # Execute monkey patching
 i = 0
 for f in functions:
-    args = inspect.getfullargspec(f).args
-    qualname = module.__name__ + "." + f.__qualname__
+    args = inspect.getfullargspec(f[0]).args
+    qualname = f[1] + "." + f[0].__qualname__
 
     s_original = 'f_original' + str(i) + '=' + qualname      # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
     exec(s_original)
@@ -67,8 +66,7 @@ for f in functions:
 
 
 # Test function calls
-module.print_example()
-module.A.add_numbers(0,3,5)
+main_basic.print_example()
+main_basic.A.add_numbers(0,3,5)
 
-
-
+main.A.add_numbers(0,3,4)

@@ -11,20 +11,9 @@ class A:
     balance = 5
 
     name = "global variable"    # global scope. We dont want to log it.
-    # -> Describe sharply what we log and what not.
-    # All functions are logged. That is everything that is defined with 'def'
-    # Here we log:
-    # - the name
-    # - the argument names
-    # - the argument values
-    # - the return types
 
     def print_example(self):
         print("print_example(self) is being called")
-
-    @staticmethod
-    def static_method():
-        pass
 
     def add_numbers(self, first, second):
         print("add_numbers(self,first,second) is being called")
@@ -34,6 +23,10 @@ class A:
         print("add_numbers(self, first, second, third) is being called")
         return first + second
 
+    def method_calls(self):
+        print_example()
+        add_five_global(4)
+
     def get_balance(self):
         print("get_balance(self) is being called")
         return self.balance
@@ -42,12 +35,14 @@ class A:
         print("swap(self,a,b) is being called")
         (b, a) = (a, b)
 
-
     def outer_funtion(self):
         print("outer_function(self) is being called")
         def inner_function():
             print("inner_function() is being called")
         inner_function()
+
+    def arg_set(self, d=5):
+        print("arg_set(self, d=5) is being called" + a)
 
 
     def foo(a, *, b: int, **kwargs):
@@ -55,6 +50,13 @@ class A:
 
     def foo1(a, b, *, c, d=10):
         pass
+
+    @staticmethod
+    def static_method():
+        pass
+
+    def arg_object(self, a):
+        print("arg_obj(self, a) is being called")
 
 
 

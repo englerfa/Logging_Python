@@ -21,7 +21,7 @@ def traverse(nodes):
 
 for module in modules:
     traverse(module)
-print(functions)
+#print(functions)
 
 
 
@@ -66,7 +66,25 @@ for f in functions:
 
 
 # Test function calls
-main_basic.print_example()
-main_basic.A.add_numbers(0,3,5)
+#main_basic.print_example()
+#main_basic.A.add_numbers(0,3,5)
 
-main.A.add_numbers(0,3,4)
+#main.print_example()
+#main.add_five_global(5)
+
+#main.A.print_example(0)
+#main.A.add_numbers(0,4,69)
+#main.A.add_numbers1(0,3,4,5)
+#main.A.swap(0,3,5)
+#main.A.static_method()
+#main.A.outer_funtion(0)
+#main.A.method_calls(0)
+main.A.arg_object(0, main.B)
+
+#main.B.add_numbers(0,2,4)
+#main.B.print_simple(0)
+#main.B.C.print_simple(0)
+
+# --------------------
+#main.A.get_balance(0)
+#main.A.arg_set(0,4)

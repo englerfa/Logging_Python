@@ -1,6 +1,5 @@
 # 07.06.2019 Proof of concept for recursion.
 
-
 def f0():
     pass
 

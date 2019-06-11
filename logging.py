@@ -21,13 +21,24 @@ def traverse(nodes):
             traverse(elem[1])   # recursion to get nested classes
 
 traverse(module)
-print(functions)
+#print(functions)
 
+
+
+
+def format_arguments(args):
+    res = ""
+    first = True
+    for arg in args:
+        if first:
+            res += '"' + arg + ' =",' + arg
+            first = False
+        else:
+            res += "," + '","' + "," + '"' + arg + ' ="' + "," + arg
+    return res
 
 
 # Execute monkey patching
-print()
-
 i = 0
 for f in functions:
     args = inspect.getfullargspec(f).args
@@ -38,11 +49,13 @@ for f in functions:
 
     s_arg_values = '(' + ','.join(args) + ')'
     s_arg_names = '"(' + ','.join(args) + ') ="'
-    s_qualname = '"' + qualname + '"'
-    s_signature = '"' + qualname + ','.join(args) + '"'
+    s_args = format_arguments(args)
+
+    s_signature = '"' + qualname + '(" ' + s_args + ',"' + ") = " + '"'
+    s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'
 
     s_f_original = 'def f_monkey' + s_arg_values + ':' + 'result = f_original' + str(i) + s_arg_values + ';'
-    s_f_extend = 'print(' + "datetime.datetime.now()," + s_qualname + "," + s_arg_names + "," + s_arg_values + "," + '"' + "return =" + '"' + "," + "result" + "," + "type(result)" + ')'
+    s_f_extend = 'print(datetime.datetime.now(),' + s_signature + s_result + ')'
     s_f = s_f_original + s_f_extend
 
     exec(s_f)

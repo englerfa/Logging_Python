@@ -10,37 +10,39 @@ import logging              # if we import this module, then logging is automati
 # TODO get all methods automatically and call all them with random parameters.
 
 
-
 # Test function/method calls
-main_basic.print_example()          # function
+# Module main
+#   Function calls
+main.print_text()
+main.add_numbers(3,5)
 
+#   Method calls
+obj_A = main.A()           # create new object
+obj_A.print_text()
+obj_A.add_numbers(3,5)
+obj_A.add_numbers1(3,5,99)
+obj_A.get_balance()
+obj_A.multiple_calls(7)
+obj_A.swap(3,5)
+
+obj_B = obj_A.B()           # create new object
+obj_B.print_text()
+
+
+main.F.static_method()
+
+obj_F = main.F()            # create new object
+obj_F.arg_set(5)
+
+
+
+
+# Module
+main_basic.print_example()          # function
 main_basic_a = main_basic.A()       # create object/instance
 main_basic_a.add_numbers(3,5)       # method
 
-main.print_example()
-main.add_five_global(5)
-
-main_A = main.A()
-main_A.print_example()
-main_A.add_numbers(4,69)
-main_A.add_numbers1(3,4,5)
-main_A.swap(3,5)
-main_A.outer_funtion()
-main_A.method_calls()
-main_A.arg_object(main.B)
-main_A.get_balance()
-main_A.arg_set(4)
-
-main.A.static_method()
-
-main_B = main.B()
-main_B.add_numbers(2,4)
-main_B.print_simple()
-
-main_B_C = main.B.C()
-main_B_C.print_simple()
-
-
+# Module
 main_basic_nested.f0()
 
 main_basic_nested_A = main_basic_nested.A()

@@ -53,7 +53,7 @@ for f in functions:
     s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'
 
     s_f_original = 'def f_monkey' + s_arg_values + ':' + 'result = f_original' + str(i) + s_arg_values + ';'
-    s_f_extend = 'print(datetime.datetime.now(),' + s_signature + s_result + ')'
+    s_f_extend = 'print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')'
     s_f = s_f_original + s_f_extend
 
     exec(s_f)

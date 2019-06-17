@@ -42,7 +42,7 @@ class A:
         inner_function()
 
     def arg_set(self, d=5):
-        print("arg_set(self, d=5) is being called" + a)
+        print("arg_set(self, d=5) is being called" , d)
 
 
     def foo(a, *, b: int, **kwargs):

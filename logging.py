@@ -6,7 +6,7 @@ import inspect                  # module with information about about objects su
 import datetime                 # do not delete this module even though it seems unused. It is used with the 'exec' command.
 
 # Define modules to log (modules must be imported above)
-modules = [main_basic, main]
+modules = [main_basic, main, main_basic_nested]
 
 
 # Retrieve functions
@@ -14,16 +14,15 @@ functions = []
 def traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
-            tuple = (elem[1], module.__name__)
+            tuple = (elem[1], mod.__name__)
             functions.append(tuple)
         if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tuple '__class__', since they are also of type 'class'
             traverse(elem[1])   # recursion to get nested classes
 
-for module in modules:
-    traverse(module)
-#print(functions)
 
 
+for mod in modules:
+    traverse(mod)
 
 def format_arguments(args):
     res = ""
@@ -64,27 +63,3 @@ for f in functions:
     i = i+1
 
 
-
-# Test function calls
-#main_basic.print_example()
-#main_basic.A.add_numbers(0,3,5)
-
-#main.print_example()
-#main.add_five_global(5)
-
-#main.A.print_example(0)
-#main.A.add_numbers(0,4,69)
-#main.A.add_numbers1(0,3,4,5)
-#main.A.swap(0,3,5)
-#main.A.static_method()
-#main.A.outer_funtion(0)
-#main.A.method_calls(0)
-main.A.arg_object(0, main.B)
-
-#main.B.add_numbers(0,2,4)
-#main.B.print_simple(0)
-#main.B.C.print_simple(0)
-
-# --------------------
-#main.A.get_balance(0)
-#main.A.arg_set(0,4)

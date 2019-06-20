@@ -1,12 +1,14 @@
 import main                     # module that we want to extend with logging
-import main_basic_nested               # module that we want to extend with logging
+import main_basic_nested        # module that we want to extend with logging
 import main_basic
+import main_functions
+import main_inheritance
 
 import inspect                  # module with information about about objects such as functions
 import datetime                 # do not delete this module even though it seems unused. It is used with the 'exec' command.
 
 # Define modules to log (modules must be imported above)
-modules = [main_basic, main, main_basic_nested]
+modules = [main_basic, main, main_basic_nested, main_functions, main_inheritance]
 
 
 # Retrieve functions
@@ -14,9 +16,9 @@ functions = []
 def traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
-            tuple = (elem[1], mod.__name__)
-            functions.append(tuple)
-        if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tuple '__class__', since they are also of type 'class'
+            tup = (elem[1], mod.__name__)
+            functions.append(tup)
+        if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tup '__class__', since they are also of type 'class'
             traverse(elem[1])   # recursion to get nested classes
 
 
@@ -55,6 +57,7 @@ for f in functions:
     s_f_original = 'def f_monkey' + s_arg_values + ':' + 'result = f_original' + str(i) + s_arg_values + ';'
     s_f_extend = 'print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')'
     s_f = s_f_original + s_f_extend
+    #print(s_f)
 
     exec(s_f)
     s_replace = qualname + ' = f_monkey'

@@ -1,55 +1,56 @@
-#06.05.2019 Proof of concept. Different cases of functions
+'''
+Different function/method calls to test if all of them are logged correctly.
+'''
 
-
-def add_five_global(value):
-    return value + 5
-
-def print_example():
-    print("print_example() is being called")
+def print_text():
+    print("print_text() is being called")
 
 class A:
     balance = 5
+    class_name = "A"
 
-    name = "global variable"    # global scope. We dont want to log it.
-
-    def print_example(self):
-        print("print_example(self) is being called")
+    def print_text(self):
+        print("print_text(self) is being called from" , self.class_name)
 
     def add_numbers(self, first, second):
-        print("add_numbers(self,first,second) is being called")
+        print("add_numbers(self,first,second) is being called from", self.class_name)
         return first + second
 
     def add_numbers1(self, first, second, third):
-        print("add_numbers(self, first, second, third) is being called")
+        print("add_numbers1(self, first, second, third) is being called from", self.class_name)
         return first + second
 
-    def method_calls(self):
-        print_example()
-        add_five_global(4)
-
     def get_balance(self):
-        print("get_balance(self) is being called")
+        print("get_balance(self) is being called from", self.class_name)
         return self.balance
+
+    def multiple_calls(self, first):
+        print("multiple_calls(self, first) is being called from", self.class_name)
+        print_text()
+
 
     def swap(self, a, b):
         print("swap(self,a,b) is being called")
         (b, a) = (a, b)
+
+    # nested class
+    class B:
+        class_name = "B"
+        def print_text(self):
+            print("print_text(self) is being called from", self.class_name)
+
+
+
+class F:
+    def arg_set(self, d=5):
+        print("arg_set(self, d=5) is being called" , d)
+
 
     def outer_funtion(self):
         print("outer_function(self) is being called")
         def inner_function():
             print("inner_function() is being called")
         inner_function()
-
-    def arg_set(self, d=5):
-        print("arg_set(self, d=5) is being called" , d)
-
-
-    def foo(a, *, b: int, **kwargs):
-        pass
-
-    def foo1(a, b, *, c, d=10):
-        pass
 
     @staticmethod
     def static_method():
@@ -59,20 +60,20 @@ class A:
         print("arg_obj(self, a) is being called")
 
 
+    def foo(a, *, b: int, **kwargs):
+        pass
 
-class B:
-
-    def print_simple(self):
-        print("print_simple(self) is being called")
-
-    #same function as in class A
-    def add_numbers(self, first, second):
-        print("add_numbers(self, first, second) is being called")
-        sum = first + second
-        return sum
+    def foo1(a, b, *, c, d=10):
+        pass
 
 
-    # class inside of class
-    class C:
-        def print_simple(self):
-            print("print_simple(self) is being called")
+
+
+
+
+
+
+
+
+
+

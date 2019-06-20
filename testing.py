@@ -10,13 +10,12 @@ import logging              # if we import this module, then logging is automati
 # TODO get all methods automatically and call all them with random parameters.
 
 
+
+
+
 # Test function/method calls
 # Module main
-#   Function calls
-main.print_text()
-main.add_numbers(3,5)
-
-#   Method calls
+#main.print_text()
 obj_A = main.A()           # create new object
 obj_A.print_text()
 obj_A.add_numbers(3,5)
@@ -38,7 +37,7 @@ obj_F.arg_set(5)
 
 
 # Module
-main_basic.print_example()          # function
+main_basic.print_text()          # function
 main_basic_a = main_basic.A()       # create object/instance
 main_basic_a.add_numbers(3,5)       # method
 

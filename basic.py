@@ -20,13 +20,6 @@ class A:
         print("get_balance(self) is being called from", self.class_name)
         return self.balance
 
-    def get_first_from_list(self, l):
-        if len(l) > 0:
-            print("get_first(l) is being called with", l)
-            return l[0]
-        else:
-            print("get_first(l) is being called with empty list")
-
     def multiple_calls(self, first):
         print("multiple_calls(self, first) is being called from", self.class_name)
         print_text()
@@ -47,6 +40,23 @@ class B:
     @staticmethod
     def static_method():
         print("static_method() is being called")
+
+
+class D:
+    class_name = "D"
+    def get_first_from_list(self, l):
+        if len(l) > 0:
+            print("get_first(l) is being called with", l)
+            return l[0]
+        else:
+            print("get_first(l) is being called with empty list")
+
+    def is_element_in_set(self, s, e):
+        if len(s) > 0:
+            print("get_first(l) is being called from", self.class_name, "with" , s)
+            return e in s
+        else:
+            print("get_first(l) is being called from", self.class_name, "with empty set")
 
 
 

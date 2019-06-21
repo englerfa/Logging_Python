@@ -24,7 +24,13 @@ obj_A.add_numbers(**{'second':1,'first':2})
 
 obj_A.add_numbers1(3,5,99)
 obj_A.get_balance()
+
+obj_A.get_first_from_list([1,2,3])
+obj_A.get_first_from_list([1])
+obj_A.get_first_from_list([])
+
 obj_A.multiple_calls(7)
+
 
 obj_A1 = obj_A.A1()              # create new object
 obj_A1.print_text()

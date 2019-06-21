@@ -17,6 +17,7 @@ obj_A.print_text()
 
 obj_A.add_numbers(3,5)
 obj_A.add_numbers(-3,-5)
+obj_A.add_numbers(3,5j)
 obj_A.add_numbers(first=3,second=5)
 obj_A.add_numbers(second=3,first=5)
 obj_A.add_numbers(*[1,2])

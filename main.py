@@ -4,14 +4,12 @@ import inheritance
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic, nested] )
+autolog.add_modules( [basic, nested, inheritance] )
 autolog.run()
 
 
-# Call functions from module main_basic
 basic.print_text()
 
-# Call class methods from module main_basic
 obj_A = basic.A()           # create new object
 obj_A.print_text()
 
@@ -27,15 +25,14 @@ obj_A.add_numbers1(3,5,99)
 obj_A.get_balance()
 obj_A.multiple_calls(7)
 
-
 obj_A1 = obj_A.A1()              # create new object
 obj_A1.print_text()
 
 obj_B = basic.B()           # create new object
 obj_B.swap(3,5)
 basic.B.static_method()
-
 print()
+
 obj_D = basic.D()              # create new object
 # Tuple
 t = 12345, 54321, 'hello!'
@@ -73,7 +70,13 @@ obj_B.fB()
 
 obj_C = nested.B.C()            # create new object
 obj_C.fC()
+print()
 
+
+
+p1 = inheritance.Person("Jack")              # create new object
+p1.get_name()
+p1.is_employee()
 
 
 

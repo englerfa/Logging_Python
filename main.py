@@ -1,13 +1,11 @@
 import basic
 import nested
+import inheritance
+
 import autolog              # if we import this module, then logging is automatically activated
 
-modules_to_log = [basic, nested]
-
-
-autolog.add_module(basic)
-autolog.traverse_modules(modules_to_log)
-autolog.execute_monkey_patching()
+autolog.add_modules( [basic, nested] )
+autolog.run()
 
 
 # Call functions from module main_basic
@@ -16,11 +14,14 @@ basic.print_text()
 # Call class methods from module main_basic
 obj_A = basic.A()           # create new object
 obj_A.print_text()
+
 obj_A.add_numbers(3,5)
 obj_A.add_numbers(-3,-5)
 obj_A.add_numbers(first=3,second=5)
 obj_A.add_numbers(second=3,first=5)
 obj_A.add_numbers(*[1,2])
+obj_A.add_numbers(**{'second':1,'first':2})
+
 obj_A.add_numbers1(3,5,99)
 obj_A.get_balance()
 obj_A.multiple_calls(7)

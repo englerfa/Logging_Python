@@ -1,7 +1,3 @@
-'''
-Different function/method definitions to test if all of them are logged correctly.
-'''
-
 def print_text():
     print("print_text() is being called")
 

@@ -1,5 +1,6 @@
 import basic
 import nested
+import inheritance
 
 import inspect                  # module used to retrieve information about functions (such as arguments, return value)
 import datetime                 # module used with 'exec' command. Do not delete even though it seems unused.
@@ -8,23 +9,31 @@ import datetime                 # module used with 'exec' command. Do not delete
 functions = []
 modules_to_log = []
 
-def add_module(module):
-    modules_to_log.append(module)
 
-def traverse(nodes):
+def add_modules(list_of_modules):
+    global  modules_to_log
+    modules_to_log = list_of_modules
+
+def run():
+    __traverse_modules(modules_to_log)
+    __execute_monkey_patching()
+
+
+
+def __traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
             tup = (elem[1], mod.__name__)
             functions.append(tup)
         if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tup '__class__', since they are also of type 'class'
-            traverse(elem[1])   # recursion to get nested classes
+            __traverse(elem[1])   # recursion to get nested classes
 
-def traverse_modules(mods):
+def __traverse_modules(mods):
     global mod
     for mod in mods:
-        traverse(mod)
+        __traverse(mod)
 
-def format_arguments(args):
+def __format_arguments(args):
     res = ""
     first = True
     for arg in args:
@@ -35,7 +44,7 @@ def format_arguments(args):
             res += "," + '","' + "," + '"' + arg + ' ="' + "," + arg
     return res
 
-def execute_monkey_patching():
+def __execute_monkey_patching():
     i = 0
     for f in functions:
         args = inspect.getfullargspec(f[0]).args
@@ -49,7 +58,7 @@ def execute_monkey_patching():
 
         s_arg_values = '(' + ','.join(args) + ')'
         s_arg_names = '"(' + ','.join(args) + ') ="'
-        s_args = format_arguments(args)
+        s_args = __format_arguments(args)
 
         s_signature = '"' + qualname + '(" ' + s_args + ',"' + ") = " + '"'
         s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'

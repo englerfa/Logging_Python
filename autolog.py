@@ -1,7 +1,5 @@
-import main_basic
-import main_nested
-import main_local
-import main_simple
+import basic
+import nested
 
 import inspect                  # module used to retrieve information about functions (such as arguments, return value)
 import datetime                 # module used with 'exec' command. Do not delete even though it seems unused.

@@ -1,78 +1,54 @@
-'''
-Different function/method calls to test if all of them are logged correctly.
-'''
+import basic
+import nested
+import autolog              # if we import this module, then logging is automatically activated
 
-def print_text():
-    print("print_text() is being called")
-
-class A:
-    balance = 5
-    class_name = "A"
-
-    def print_text(self):
-        print("print_text(self) is being called from" , self.class_name)
-
-    def add_numbers(self, first, second):
-        print("add_numbers(self,first,second) is being called from", self.class_name)
-        return first + second
-
-    def add_numbers1(self, first, second, third):
-        print("add_numbers1(self, first, second, third) is being called from", self.class_name)
-        return first + second
-
-    def get_balance(self):
-        print("get_balance(self) is being called from", self.class_name)
-        return self.balance
-
-    def multiple_calls(self, first):
-        print("multiple_calls(self, first) is being called from", self.class_name)
-        print_text()
+modules_to_log = [basic, nested]
 
 
-    def swap(self, a, b):
-        print("swap(self,a,b) is being called")
-        (b, a) = (a, b)
-
-    # nested class
-    class B:
-        class_name = "B"
-        def print_text(self):
-            print("print_text(self) is being called from", self.class_name)
+autolog.add_module(basic)
+autolog.traverse_modules(modules_to_log)
+autolog.execute_monkey_patching()
 
 
+# Call functions from module main_basic
+basic.print_text()
 
-class F:
-    def arg_set(self, d=5):
-        print("arg_set(self, d=5) is being called" , d)
+# Call class methods from module main_basic
+obj_A = basic.A()           # create new object
+obj_A.print_text()
+obj_A.add_numbers(3,5)
+obj_A.add_numbers(-3,-5)
+obj_A.add_numbers(first=3,second=5)
+obj_A.add_numbers(second=3,first=5)
+obj_A.add_numbers(*[1,2])
+obj_A.add_numbers1(3,5,99)
+obj_A.get_balance()
+obj_A.multiple_calls(7)
 
+obj_A1 = obj_A.A1()              # create new object
+obj_A1.print_text()
 
-    def outer_funtion(self):
-        print("outer_function(self) is being called")
-        def inner_function():
-            print("inner_function() is being called")
-        inner_function()
-
-    @staticmethod
-    def static_method():
-        pass
-
-    def arg_object(self, a):
-        print("arg_obj(self, a) is being called")
-
-
-    def foo(a, *, b: int, **kwargs):
-        pass
-
-    def foo1(a, b, *, c, d=10):
-        pass
+obj_B = basic.B()           # create new object
+obj_B.swap(3,5)
+basic.B.static_method()
 
 
 
 
 
 
+# Call functions from module main_nested
+nested.f0()
 
+# Call class methods from module main_nested
+obj_A = nested.A()              # create new object
+obj_A.fA()
 
+obj_B = nested.B()              # create new object
+obj_B.fB()
+
+obj_C = nested.B.C()            # create new object
+obj_C.fC()
 
 
 

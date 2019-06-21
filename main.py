@@ -37,22 +37,27 @@ basic.B.static_method()
 
 print()
 obj_D = basic.D()              # create new object
-obj_D.get_first_from_list([1,2,3])
-obj_D.get_first_from_list([1])
+# Tuple
+t = 12345, 54321, 'hello!'
+obj_D.get_element(t)
+obj_D.get_element(None)
+# List
+numbers = [1,2,3]
+obj_D.get_first_from_list(numbers)
+obj_D.get_first_from_list(numbers[1:2])
 obj_D.get_first_from_list([])
-
+# Set
 basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
 obj_D.is_element_in_set(basket, 'orange')
 obj_D.is_element_in_set(basket, '')
 obj_D.is_element_in_set(None, 'orange')
 obj_D.is_element_in_set(None, '')
-
+# Dictionary
 tel = {'jack': 4098, 'sape': 4139}
 obj_D.get_telnr_from_dictionary(tel, 'jack')
 obj_D.get_telnr_from_dictionary(tel, '')
 obj_D.get_telnr_from_dictionary(None, 'jack')
 obj_D.get_telnr_from_dictionary(None, '')
-
 print()
 
 

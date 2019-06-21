@@ -44,6 +44,14 @@ class B:
 
 class D:
     class_name = "D"
+
+    def get_element(self, data):
+        if data != None and len(data) > 0:
+            print("get_element(data) is being called from", self.class_name, "with" , data)
+            return data[0]
+        else:
+            print("is_element_in_set(s,e) is being called from", self.class_name, "with empty set")
+
     def get_first_from_list(self, l):
         if l != None and len(l) > 0:
             print("get_first_from_list(l) is being called with", l)

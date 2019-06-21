@@ -2,6 +2,13 @@
 import  main_nested
 import logging
 
+
+modules_to_log = [main_nested]
+
+logging.add_module(main_nested)
+logging.traverse_modules(modules_to_log)
+logging.execute_monkey_patching()
+
 # Call functions from module main_nested
 main_nested.f0()
 

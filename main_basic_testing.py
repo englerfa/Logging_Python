@@ -1,6 +1,12 @@
 import main_basic
 import logging              # if we import this module, then logging is automatically activated
 
+modules_to_log = [main_basic]
+
+logging.add_module(main_basic)
+logging.traverse_modules(modules_to_log)
+logging.execute_monkey_patching()
+
 
 # Call functions from module main_basic
 main_basic.print_text()

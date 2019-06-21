@@ -1,20 +1,18 @@
 
-def f0():
-    pass
 
-class A:
-    def fA(self):
-        def fA1():
-            pass
+class Person:
+    # Constructor
+    def __init__(self, name):
+        self.name = name
 
-class B:
-    def fB(self):
-        pass
+    def get_name(self):
+        return self.name
 
-    class C:
-        def fC(self):
-            pass
+    def is_employee(self):
+        return False
 
-    class D:
-        class E:
-            pass
+
+# Inherited or Sub class
+class Employee(Person):
+    def is_employee(self):
+        return True

@@ -45,20 +45,25 @@ class B:
 class D:
     class_name = "D"
     def get_first_from_list(self, l):
-        if len(l) > 0:
-            print("get_first(l) is being called with", l)
+        if l != None and len(l) > 0:
+            print("get_first_from_list(l) is being called with", l)
             return l[0]
         else:
-            print("get_first(l) is being called with empty list")
+            print("get_first_from_list(l) is being called with empty list")
 
     def is_element_in_set(self, s, e):
-        if len(s) > 0:
-            print("get_first(l) is being called from", self.class_name, "with" , s)
+        if s != None and len(s) > 0:
+            print("is_element_in_set(s,e) is being called from", self.class_name, "with" , s)
             return e in s
         else:
-            print("get_first(l) is being called from", self.class_name, "with empty set")
+            print("is_element_in_set(s,e) is being called from", self.class_name, "with empty set")
 
-
+    def get_telnr_from_dictionary(self, d, e):
+        if d != None and len(d) > 0 and len(e)>0:
+            print("get_element_from_dictionary(d,e) is being called from", self.class_name, "with" , d)
+            return d[e]
+        else:
+            print("get_element_from_dictionary(d,e) is being called from", self.class_name, "with empty set")
 
 
 

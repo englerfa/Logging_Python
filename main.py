@@ -1,10 +1,11 @@
 import basic
+import basic2
 import nested
 import inheritance
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic, nested, inheritance] )
+autolog.add_modules( [basic, basic2, nested, inheritance] )
 autolog.run()
 
 
@@ -74,9 +75,35 @@ print()
 
 
 
+
+
+
 p1 = inheritance.Person("Jack")              # create new object
 p1.get_name()
 p1.is_employee()
+
+print()
+p2 = inheritance.Employee("Jane")
+p2.get_name()
+p2.is_employee()
+
+print()
+#p3 = inheritance.Combined("Emily", "Citroen")
+
+
+
+
+
+e1 = basic2.E()
+e1.default_parameter(3)
+e1.default_parameter()
+
+e2 = basic2.E()
+e2.default_parameter1(3)
+e2.default_parameter1(3,4)
+e2.default_parameter1(3,4,5)
+
+
 
 
 

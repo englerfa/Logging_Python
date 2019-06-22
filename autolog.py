@@ -1,6 +1,7 @@
 import basic
-import nested
+import basic2
 import inheritance
+import nested
 
 import inspect                  # module used to retrieve information about functions (such as arguments, return value)
 import datetime                 # module used with 'exec' command. Do not delete even though it seems unused.
@@ -18,8 +19,6 @@ def run():
     __traverse_modules(modules_to_log)
     __execute_monkey_patching()
 
-
-
 def __traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
@@ -34,9 +33,10 @@ def __traverse_modules(mods):
         __traverse(mod)
 
 def __format_arguments(args):
+    arg_names = args.args
     res = ""
     first = True
-    for arg in args:
+    for arg in arg_names:
         if first:
             res += '"' + arg + ' =",' + arg
             first = False
@@ -44,35 +44,78 @@ def __format_arguments(args):
             res += "," + '","' + "," + '"' + arg + ' ="' + "," + arg
     return res
 
+# This function is needed to handle default parameters.
+def __assemble_arguments_default(args):
+    defs = []
+    k=0
+    for arg in args.args:
+        if args != None and args.defaults != None and k < len(args.defaults):
+            defs.insert(0,args.defaults[k])
+        else:
+            defs.insert(0,'')
+        k=k+1
+
+    res = ""
+    i = 0
+    first = True
+    for arg in args.args:
+        if first:
+            if defs[i] == '':
+                res += f'{args.args[i]}'
+                i = i+1
+                first = False
+            else:
+                res += f'{args.args[i]}={defs[i]}'
+                i = i+1
+                first = False
+        else:
+            if defs[i] == '':
+                res += f',{args.args[i]}'
+                i = i+1
+            else:
+                res += f',{args.args[i]}={defs[i]}'
+                i = i+1
+    return res
+
 def __execute_monkey_patching():
     i = 0
     for f in functions:
-        args = inspect.getfullargspec(f[0]).args
+        args = inspect.getfullargspec(f[0])
         qualname = f[1] + "." + f[0].__qualname__
 
-        s_original = 'f_original' + str(i) + '=' + qualname + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
         s_global = 'global f_original' + str(i) + ';'
-        #print(s_global + s_original)
-        exec(s_global + s_original)
+        s_original = 'f_original' + str(i) + '=' + qualname + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
-
-        s_arg_values = '(' + ','.join(args) + ')'
-        s_arg_names = '"(' + ','.join(args) + ') ="'
+        s_arg_defaults = '(' + __assemble_arguments_default(args) + ')'
         s_args = __format_arguments(args)
 
         s_signature = '"' + qualname + '(" ' + s_args + ',"' + ") = " + '"'
         s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'
 
-        s_f_original = 'def f_monkey' + s_arg_values + ':' + 'result = f_original' + str(i) + s_arg_values + ';'
-        s_f_extend = 'print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')'
-        s_f = s_f_original + s_f_extend
-        #print(s_f)
-        exec(s_f)
+        s_f_original = 'def f_monkey' + s_arg_defaults + ':\n' + '    result = f_original' + str(i) + s_arg_defaults
+        s_f_extend = '    try:\n        print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')' + '\n    except:\n        print(datetime.datetime.now(),"exception raised while logging")'
 
         s_replace = qualname + ' = f_monkey'
-        #print(s_replace)
-        exec(s_replace)
+
+        s_execute = s_global + '\n' + s_original + '\n' + s_f_original + '\n' + s_f_extend+ '\n' + s_replace
+        #print(s_execute)
+        exec(s_execute)
 
         i = i + 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

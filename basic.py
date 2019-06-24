@@ -2,7 +2,10 @@ def print_text():
     print("print_text() is being called")
 
 class A:
-    balance = 5
+    static_field = 10
+
+    def __init__(self):
+        self.balance = 5
 
     def print_text(self):
         print("print_text(self) is being called from" , A.__name__)
@@ -17,7 +20,7 @@ class A:
 
     def get_balance(self):
         print("get_balance(self) is being called from", A.__name__)
-        return self.balance
+        return self.balance + self.static_field
 
     def multiple_calls(self, first):
         print("multiple_calls(self, first) is being called from", A.__name__)

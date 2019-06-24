@@ -1,5 +1,4 @@
 class E:
-    class_name = "E"
 
     def default_parameter(self, d=5):
         print("default_parameter(self, d=5) is being called with", d)

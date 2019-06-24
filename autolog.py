@@ -16,23 +16,23 @@ def add_modules(list_of_modules):
     modules_to_log = list_of_modules
 
 def run():
-    __traverse_modules(modules_to_log)
-    __execute_monkey_patching()
+    _traverse_modules(modules_to_log)
+    _execute_monkey_patching()
 
-def __traverse(nodes):
+def _traverse(nodes):
     for elem in inspect.getmembers(nodes):
         if type(elem[1]).__name__ == "function":                            # get global functions
             tup = (elem[1], mod.__name__)
             functions.append(tup)
         if type(elem[1]) == type.__class__ and elem[0] != "__class__":      # Need to exclude tup '__class__', since they are also of type 'class'
-            __traverse(elem[1])   # recursion to get nested classes
+            _traverse(elem[1])   # recursion to get nested classes
 
-def __traverse_modules(mods):
+def _traverse_modules(mods):
     global mod
     for mod in mods:
-        __traverse(mod)
+        _traverse(mod)
 
-def __format_arguments(args):
+def _format_arguments(args):
     arg_names = args.args
     res = ""
     first = True
@@ -45,7 +45,7 @@ def __format_arguments(args):
     return res
 
 # This function is needed to handle default parameters.
-def __assemble_arguments_default(args):
+def _assemble_arguments_default(args):
     defs = []
     k=0
     for arg in args.args:
@@ -77,7 +77,7 @@ def __assemble_arguments_default(args):
                 i = i+1
     return res
 
-def __execute_monkey_patching():
+def _execute_monkey_patching():
     i = 0
     for f in functions:
         args = inspect.getfullargspec(f[0])
@@ -86,8 +86,8 @@ def __execute_monkey_patching():
         s_global = 'global f_original' + str(i) + ';'
         s_original = 'f_original' + str(i) + '=' + qualname + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
-        s_arg_defaults = '(' + __assemble_arguments_default(args) + ')'
-        s_args = __format_arguments(args)
+        s_arg_defaults = '(' + _assemble_arguments_default(args) + ')'
+        s_args = _format_arguments(args)
 
         s_signature = '"' + qualname + '(" ' + s_args + ',"' + ") = " + '"'
         s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'

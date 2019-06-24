@@ -45,12 +45,12 @@ def _format_arguments(args):
     return res
 
 # This function is needed to handle default parameters.
-def _assemble_arguments_default(args):
+def _assemble_arguments_default(args_specification):
     defs = []
     k=0
-    for arg in args.args:
-        if args != None and args.defaults != None and k < len(args.defaults):
-            defs.insert(0,args.defaults[k])
+    for arg in args_specification.args:
+        if args_specification != None and args_specification.defaults != None and k < len(args_specification.defaults):
+            defs.insert(0,args_specification.defaults[k])
         else:
             defs.insert(0,'')
         k=k+1
@@ -58,36 +58,36 @@ def _assemble_arguments_default(args):
     res = ""
     i = 0
     first = True
-    for arg in args.args:
+    for arg in args_specification.args:
         if first:
             if defs[i] == '':
-                res += f'{args.args[i]}'
+                res += f'{args_specification.args[i]}'
                 i = i+1
                 first = False
             else:
-                res += f'{args.args[i]}={defs[i]}'
+                res += f'{args_specification.args[i]}={defs[i]}'
                 i = i+1
                 first = False
         else:
             if defs[i] == '':
-                res += f',{args.args[i]}'
+                res += f',{args_specification.args[i]}'
                 i = i+1
             else:
-                res += f',{args.args[i]}={defs[i]}'
+                res += f',{args_specification.args[i]}={defs[i]}'
                 i = i+1
     return res
 
 def _execute_monkey_patching():
     i = 0
     for f in functions:
-        args = inspect.getfullargspec(f[0])
+        args_specification = inspect.getfullargspec(f[0])
         qualname = f[1] + "." + f[0].__qualname__
 
         s_global = 'global f_original' + str(i) + ';'
         s_original = 'f_original' + str(i) + '=' + qualname + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
-        s_arg_defaults = '(' + _assemble_arguments_default(args) + ')'
-        s_args = _format_arguments(args)
+        s_arg_defaults = '(' + _assemble_arguments_default(args_specification) + ')'
+        s_args = _format_arguments(args_specification)
 
         s_signature = '"' + qualname + '(" ' + s_args + ',"' + ") = " + '"'
         s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'

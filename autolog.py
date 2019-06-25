@@ -93,7 +93,7 @@ def _execute_monkey_patching():
         s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'
 
         s_f_original = 'def f_monkey' + s_arg_defaults + ':\n' + '    result = f_original' + str(i) + s_arg_defaults
-        s_f_extend = '    try:\n        print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')' + '\n    except:\n        print(datetime.datetime.now(),"exception raised while logging")'
+        s_f_extend = '    try:\n        print("     ",   datetime.datetime.now(),' + s_signature + s_result + ')' + '\n    except Exception as e:\n        print(datetime.datetime.now(),"exception raised while logging", str(e))'
 
         s_replace = qualname + ' = f_monkey'
 

@@ -42,7 +42,7 @@ class B:
     def static_method():
         print("static_method() is being called from", B.__name__)
 
-    def variable_arguments(*argv):
+    def variable_arguments(self, *argv):
         print("variable_arguments() is being called from", B.__name__)
         for arg in argv:
             print(arg)

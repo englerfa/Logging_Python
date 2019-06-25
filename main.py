@@ -95,13 +95,14 @@ print()
 
 
 e1 = basic2.E()
-e1.default_parameter(3)
-e1.default_parameter()
+e1.no_default_parameter(7)
+e1.one_default_parameter(3)
+e1.one_default_parameter()
 
 e2 = basic2.E()
-e2.default_parameter1(3)
-e2.default_parameter1(3,4)
-e2.default_parameter1(3,4,5)
+e2.two_default_parameters(3)
+e2.two_default_parameters(3,4)
+e2.two_default_parameters(3,4,5)
 
 
 

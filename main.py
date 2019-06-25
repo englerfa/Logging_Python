@@ -52,10 +52,10 @@ obj_D.is_element_in_set(None, 'orange')
 obj_D.is_element_in_set(None, '')
 # Dictionary
 tel = {'jack': 4098, 'sape': 4139}
-obj_D.get_telnr_from_dictionary(tel, 'jack')
-obj_D.get_telnr_from_dictionary(tel, '')
-obj_D.get_telnr_from_dictionary(None, 'jack')
-obj_D.get_telnr_from_dictionary(None, '')
+obj_D.get_nr_from_dictionary(tel, 'jack')
+obj_D.get_nr_from_dictionary(tel, '')
+obj_D.get_nr_from_dictionary(None, 'jack')
+obj_D.get_nr_from_dictionary(None, '')
 print()
 
 

@@ -5,7 +5,7 @@ import inheritance
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic2] )
+autolog.add_modules( [basic, basic2, nested, inheritance] )
 autolog.run()
 
 

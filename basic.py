@@ -42,6 +42,11 @@ class B:
     def static_method():
         print("static_method() is being called from", B.__name__)
 
+    def variable_arguments(*argv):
+        print("variable_arguments() is being called from", B.__name__)
+        for arg in argv:
+            print(arg)
+
 
 class D:
     def get_element(self, data):
@@ -49,7 +54,7 @@ class D:
             print("get_element(data) is being called from", D.__name__, "with" , data)
             return data[0]
         else:
-            print("is_element_in_set(s,e) is being called from", D.__name__, "with empty set")
+            print("get_element(s,e) is being called from", D.__name__, "with empty set")
 
     def get_first_from_list(self, l):
         if l != None and len(l) > 0:

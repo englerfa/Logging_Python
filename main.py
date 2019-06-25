@@ -5,7 +5,7 @@ import inheritance
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic, basic2, nested, inheritance] )
+autolog.add_modules( [basic2] )
 autolog.run()
 
 
@@ -93,7 +93,7 @@ print()
 
 
 
-
+basic2.add_numbers(3,5)
 e1 = basic2.E()
 e1.no_default_parameter(7)
 e1.one_default_parameter(3)

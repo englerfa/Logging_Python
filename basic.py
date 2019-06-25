@@ -70,12 +70,12 @@ class D:
         else:
             print("is_element_in_set(s,e) is being called from", D.__name__, "with empty set")
 
-    def get_telnr_from_dictionary(self, d, e):
+    def get_nr_from_dictionary(self, d, e):
         if d != None and len(d) > 0 and len(e)>0:
-            print("get_element_from_dictionary(d,e) is being called from", D.__name__, "with" , d)
+            print("get_nr_from_dictionary(d,e) is being called from", D.__name__, "with" , d)
             return d[e]
         else:
-            print("get_element_from_dictionary(d,e) is being called from", D.__name__, "with empty set")
+            print("get_nr_from_dictionary(d,e) is being called from", D.__name__, "with empty set")
 
 
 

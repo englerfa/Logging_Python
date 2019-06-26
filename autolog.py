@@ -101,7 +101,7 @@ def _execute_monkey_patching():
         s_global = 'global f_original' + str(i) + ';'
         s_original = 'f_original' + str(i) + '=' + s_function_name + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
-        s_signature= '(' + _assemble_variable_arguments(fullargsspec) + ')'
+        s_signature = str(inspect.signature(f[0]))
         s_args = _format_arguments(fullargsspec)
 
         s_definition = '"' + s_function_name + '(" ' + s_args + ',"' + ") = " + '"'

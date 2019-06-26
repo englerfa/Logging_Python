@@ -5,7 +5,7 @@ import inheritance
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic, basic2, nested, inheritance] )
+autolog.add_modules( [basic2] )
 autolog.run()
 
 
@@ -104,7 +104,22 @@ e2.two_default_parameters(3)
 e2.two_default_parameters(3,4)
 e2.two_default_parameters(3,4,5)
 
+print()
+e1.variable_argument([])
+e1.variable_argument([1])
+e1.variable_argument([1,2,3])
+print()
+e1.normal_variable_argument(4, [1,2,3])
+print()
+e1.default_variable_argument([1,2,3])
+#e1.default_variable_argument(5,[1,2,3])
+e1.normal_default_variable_argument(4, [1,2,3])
+print()
+e1.variable_kwargs()
+e1.variable_kwargs(a ='A')
+e1.variable_kwargs(a ='A', b ='B', c='C')
 
-# TODO Add tests for variable number of arguments (*args) and (**kwargs)
+
+
 
 

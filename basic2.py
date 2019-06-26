@@ -16,6 +16,27 @@ class E:
 
 
 
+    def variable_argument(self, *argv):
+        print("variable_argument(*argv) is being called from", E.__name__)
 
+    def variable_normal_argument(self, *argv, a):
+        print("variable_normal_argument(*argv, a) is being called from", E.__name__)
+
+    def normal_variable_argument(self, a, *argv):
+        print("normal_variable_argument(a, *argv) is being called from", E.__name__)
+
+    def default_variable_argument(self, a=7, *argv):
+        print("normal_variable_argument(a, *argv) is being called from", E.__name__)
+
+    def normal_default_variable_argument(self, a, b=7, *argv):
+        print("normal_variable_argument(a, *argv) is being called from", E.__name__)
+
+
+
+    def variable_kwargs(self, **kwargs):
+        print("variable_kwargs(**kwargs) is being called from", E.__name__)
+
+    def normal_variable_kwargs(self, a, **kwargs):
+        print("normal_variable_kwargs(**kwargs) is being called from", E.__name__)
 
 

@@ -55,43 +55,6 @@ def _format_arguments(fullargsspec):
             res += "," + '","' + "," + '"' + arg + ' ="' + "," + arg
     return res
 
-# This function is needed to handle default parameters.
-def _assemble_variable_arguments(fullargsspec):
-    print(fullargsspec)
-
-    # Preparation: transform default values into array of same length as other arguments
-    k=0
-    defaults = []
-    for arg in fullargsspec.args:
-        if fullargsspec is not None and fullargsspec.defaults is not None and k < len(fullargsspec.defaults):
-            defaults.insert(0,fullargsspec.defaults[k])
-        else:
-            defaults.insert(0,'')
-        k=k+1
-
-        # Handle arguments with different lengths
-    res = ""
-    i = 0
-    first = True
-    for arg in fullargsspec.args:
-        if first:               # postfence problem
-            if defaults[i] == '':
-                res += f'{fullargsspec.args[i]}'
-                i = i+1
-                first = False
-            else:
-                res += f'{fullargsspec.args[i]}={defaults[i]}'
-                i = i+1
-                first = False
-        else:
-            if defaults[i] == '':
-                res += f',{fullargsspec.args[i]}'
-                i = i+1
-            else:
-                res += f',{fullargsspec.args[i]}={defaults[i]}'
-                i = i+1
-    return res
-
 def _execute_monkey_patching():
     i = 0
     for f in functions:

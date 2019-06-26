@@ -49,7 +49,7 @@ def _assemble_arguments_default(args_specification):
     defs = []
     k=0
     for arg in args_specification.args:
-        if args_specification != None and args_specification.defaults != None and k < len(args_specification.defaults):
+        if args_specification is not None and args_specification.defaults is not None and k < len(args_specification.defaults):
             defs.insert(0,args_specification.defaults[k])
         else:
             defs.insert(0,'')

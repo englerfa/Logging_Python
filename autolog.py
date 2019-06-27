@@ -43,7 +43,6 @@ def _traverse_modules(mods):
     for mod in mods:
         _traverse(mod)
 
-
 def _format_signature(signature):
     res = '('
     first = True        # solution for post fence problem
@@ -55,7 +54,6 @@ def _format_signature(signature):
             res += ',' + str(sig) + '=' + '{' + str(sig) + '}'
     res += ')'
     return res
-
 
 def _execute_monkey_patching():
     i = 0
@@ -81,9 +79,3 @@ def _execute_monkey_patching():
         exec(s_execute)
 
         i = i + 1
-
-
-
-
-
-

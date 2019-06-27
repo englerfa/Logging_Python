@@ -43,54 +43,44 @@ def _traverse_modules(mods):
     for mod in mods:
         _traverse(mod)
 
-def _format_arguments(fullargsspec):
-    arg_names = fullargsspec.args
-    res = ""
-    first = True
-    for arg in arg_names:
+
+def _format_signature(signature):
+    res = '('
+    first = True        # post fence problem
+    for sig in signature.parameters:
         if first:
-            res += '"' + arg + ' =",' + arg
+            res += str(sig) + '=' + '{' + str(sig) + '}'
             first = False
         else:
-            res += "," + '","' + "," + '"' + arg + ' ="' + "," + arg
+            res += ',' + str(sig) + '=' + '{' + str(sig) + '}'
+    res += ')'
     return res
+
 
 def _execute_monkey_patching():
     i = 0
     for f in functions:
-        fullargsspec = inspect.getfullargspec(f[0])
-        s_function_name = f[1] + "." + f[0].__qualname__
+        s_name = f[1] + "." + f[0].__qualname__
 
-        s_global = 'global f_original' + str(i) + ';'
-        s_original = 'f_original' + str(i) + '=' + s_function_name + ';'  # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_global = f"global f_original{str(i)}"
+        s_original = f"f_original{str(i)}={s_name}"         # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
         s_signature = str(inspect.signature(f[0]))
-        s_args = _format_arguments(fullargsspec)
+        s_signature_values = _format_signature(inspect.signature(f[0]))
 
-        s_definition = '"' + s_function_name + '(" ' + s_args + ',"' + ") = " + '"'
-        s_result = ", result," + '"' + "[" + '"' + ", type(result)," + '"' + "]" + '"'
+        s_f_original = f"def f_monkey {s_signature}: \n    result = f_original{str(i)}{s_signature}"
 
-        s_f_original = 'def f_monkey' + s_signature + ':\n' + '    result = f_original' + str(i) + s_signature
-        s_f_extend = '    try:\n        print("     ",   datetime.datetime.now(),' + s_definition + s_result + ')' + '\n    except Exception as e:\n        print(datetime.datetime.now(),"exception raised while logging", str(e))'
+        s_extend_try = f"    try:\n        print(f'{datetime.datetime.now()} {s_name}{s_signature_values} =',result, type(result))"
+        s_extend_exception = '    except Exception as e:\n        print(datetime.datetime.now(),"exception raised while logging", str(e))'
+        s_extend = s_extend_try + '\n' + s_extend_exception
 
-        s_replace = s_function_name + ' = f_monkey'
+        s_replace = s_name + ' = f_monkey'
 
-        s_execute = s_global + '\n' + s_original + '\n' + s_f_original + '\n' + s_f_extend+ '\n' + s_replace
+        s_execute = s_global + '\n' + s_original + '\n' + s_f_original + '\n' + s_extend+ '\n' + s_replace
         #print(s_execute)
         exec(s_execute)
 
         i = i + 1
-
-
-
-
-
-
-
-
-
-
-
 
 
 

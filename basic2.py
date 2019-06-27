@@ -28,7 +28,7 @@ class E:
     def default_variable_argument(self, a=7, *argv):
         print("normal_variable_argument(a, *argv) is being called from", E.__name__)
 
-    def normal_default_variable_argument(self, a, b=7, *argv):
+    def normal_default_variable_argument(self, a, *argv, b=7):
         print("normal_variable_argument(a, *argv) is being called from", E.__name__)
 
 

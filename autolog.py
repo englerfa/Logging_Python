@@ -46,7 +46,7 @@ def _traverse_modules(mods):
 
 def _format_signature(signature):
     res = '('
-    first = True        # post fence problem
+    first = True        # solution for post fence problem
     for sig in signature.parameters:
         if first:
             res += str(sig) + '=' + '{' + str(sig) + '}'

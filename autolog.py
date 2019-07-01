@@ -55,18 +55,22 @@ def _format_signature(signature):
     comma = False        # solution for post fence problem
     for sig in signature.parameters:
         default = signature.parameters[sig].default
-        if type(default) == type:
+        if type(default) == str:
+            default = "'" + str(default) + "'"
+        elif type(default) == type:
             # import type from the module to assure its existence
             command = f'global {default.__name__}\nfrom {default.__module__} import {default.__name__}'
             print(command)
             exec(command)
-            default = default.__name__
+            default = str(default.__name__)
+        else:
+            default = str(default)
 
-        print('signature: ' + signature.parameters[sig].name)
-        print('signature.type: ' + str(default))
+        print('signature attri: ' + signature.parameters[sig].name)
+        print('signature value: ' + default)
         if comma:
             res += ', '
-        res += signature.parameters[sig].name + '=' + str(default)
+        res += signature.parameters[sig].name + '=' + default
         comma = True
     res += ')'
     print('resulting signature: ' + res)
@@ -85,8 +89,8 @@ def _execute_monkey_patching():
 
         s_f_original = f"def f_monkey{s_signature_values}: \n    result = f_original{str(i)}{s_signature_values}"
 
-        s_extend_try = f"    try:\n        print(f'{s_name}{s_signature_values} =',result, type(result))"
-        s_extend_exception = '    except Exception as e:\n        print(datetime.datetime.now(),"exception raised while logging", str(e))'
+        s_extend_try = f"    try:\n        print(f\"{s_name}{s_signature_values} =\",result, type(result))"
+        s_extend_exception = "    except Exception as e:\n        print(datetime.datetime.now(),\"exception raised while logging\", str(e))"
         s_extend = s_extend_try + '\n' + s_extend_exception
 
         s_replace = s_name + ' = f_monkey'

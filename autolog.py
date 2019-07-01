@@ -46,7 +46,7 @@ def _traverse_modules(mods):
             command = f'global {mod_path[-1]}\nfrom {".".join(mod_path[:-1])} import {mod_path[-1]}'
         else:
             command = f'global {mod_path[-1]}\nimport {mod_path[-1]}'
-        print(command)
+        #print(command)
         exec(command)
         _traverse(mod)
 
@@ -55,12 +55,16 @@ def _format_signature(signature):
     comma = False        # solution for post fence problem
     for sig in signature.parameters:
         default = signature.parameters[sig].default
+        empty = False
         if type(default) == str:
             default = "'" + str(default) + "'"
+        elif default == inspect._empty:
+            empty = True
+            default = ''
         elif type(default) == type:
             # import type from the module to assure its existence
             command = f'global {default.__name__}\nfrom {default.__module__} import {default.__name__}'
-            print(command)
+            #print(command)
             exec(command)
             default = str(default.__name__)
         else:
@@ -70,10 +74,14 @@ def _format_signature(signature):
         print('signature value: ' + default)
         if comma:
             res += ', '
-        res += signature.parameters[sig].name + '=' + default
+        if '**' in str(signature.parameters[sig]):
+            res += '**'
+        res += signature.parameters[sig].name
+        if not empty:
+             res += '=' + default
         comma = True
     res += ')'
-    print('resulting signature: ' + res)
+    #print('resulting signature: ' + res)
     return res
 
 def _execute_monkey_patching():
@@ -87,15 +95,17 @@ def _execute_monkey_patching():
         s_signature = str(inspect.signature(f[0]))
         s_signature_values = _format_signature(inspect.signature(f[0]))
 
-        s_f_original = f"def f_monkey{s_signature_values}: \n    result = f_original{str(i)}{s_signature_values}"
+        s_f_def = f"def f_monkey{s_signature_values}:"
 
-        s_extend_try = f"    try:\n        print(f\"{s_name}{s_signature_values} =\",result, type(result))"
-        s_extend_exception = "    except Exception as e:\n        print(datetime.datetime.now(),\"exception raised while logging\", str(e))"
-        s_extend = s_extend_try + '\n' + s_extend_exception
+        s_f_log = f"  print(f\"autolog fun called: {s_name}{s_signature_values}\")"
+
+        s_f_call = f"  result = f_original{str(i)}{s_signature_values}"
+        
+        s_f_ret = "  print(result, type(result))"
 
         s_replace = s_name + ' = f_monkey'
 
-        s_execute = s_global + '\n' + s_original + '\n' + s_f_original + '\n' + s_extend+ '\n' + s_replace
+        s_execute = '\n'.join([s_global, s_original, s_f_def, s_f_log, s_f_call, s_f_ret, s_replace])
         print(s_execute)
         exec(s_execute)
 

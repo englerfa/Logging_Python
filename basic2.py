@@ -25,8 +25,10 @@ class E:
     def normal_variable_argument(self, a, *argv):
         print("normal_variable_argument(a, *argv) is being called from", E.__name__)
 
-    def default_variable_argument(self, a=7, *argv):
-        print("normal_variable_argument(a, *argv) is being called from", E.__name__)
+    # this is not valid Python code - default arguments have to be behind non-default
+    # SyntaxError: non-default argument follows default argument
+    #def default_variable_argument(self, a=7, *argv):
+    #    print("normal_variable_argument(a, *argv) is being called from", E.__name__)
 
     def normal_default_variable_argument(self, a, *argv, b=7):
         print("normal_variable_argument(a, *argv) is being called from", E.__name__)

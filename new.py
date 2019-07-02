@@ -11,4 +11,6 @@ def use_library_functions():
     q = numbers.Rational
     q.numerator = 1
     q.denominator = 7
+    q.conjugate(1)
     return(f"q={q.numerator}/{q.denominator}")
+

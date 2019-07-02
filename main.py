@@ -125,6 +125,6 @@ e1.variable_kwargs(a ='A', b ='B', c='C')
 
 print()
 print("New ------------------------")
-new.add_numbers(3,5)
+new.use_library_functions()
 
 

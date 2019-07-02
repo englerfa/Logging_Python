@@ -20,14 +20,19 @@ import inheritance
 import nested
 
 functions = []
-modules_to_log = [basic, basic2, inheritance, nested]
+modules_to_log = []
+modules_not_to_log = []
+
+def exclude_modules(list_of_modules):
+    global modules_not_to_log
+    modules_not_to_log = list_of_modules
 
 def add_modules(list_of_modules):
     global  modules_to_log
     modules_to_log = list_of_modules
 
 def run():
-    _traverse_modules(modules_to_log)
+    _traverse_modules(list(set(modules_to_log) - set(modules_not_to_log)))
     _execute_monkey_patching()
 
 def _traverse(nodes):

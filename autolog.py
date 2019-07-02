@@ -4,8 +4,9 @@ This module enables to log function and method calls automatically.
 
 Here are some of the useful functions provided by this module:
 
-    add_modules()
-    run()
+    add_modules(list_of_modules)        Define modules that we want to log
+    exclude_modules(list_of_modules)    Define modules that we do not want to log
+    run()                               Activate logging
 
 No warranties for this module.
 """
@@ -24,13 +25,13 @@ functions = []
 modules_to_log = []
 modules_not_to_log = []
 
-def exclude_modules(list_of_modules):
-    global modules_not_to_log
-    modules_not_to_log = list_of_modules
-
 def add_modules(list_of_modules):
     global  modules_to_log
     modules_to_log = list_of_modules
+
+def exclude_modules(list_of_modules):
+    global modules_not_to_log
+    modules_not_to_log = list_of_modules
 
 def run():
     _traverse_modules(list(set(modules_to_log) - set(modules_not_to_log)))

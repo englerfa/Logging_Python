@@ -64,23 +64,22 @@ def _format_signature(signature):
 def _execute_monkey_patching():
     i = 0
     for f in functions:
-        s_name = f[1] + "." + f[0].__qualname__
+        qualified_name = f[1] + "." + f[0].__qualname__
+        signature = str(inspect.signature(f[0]))
+        signature_values = _format_signature(inspect.signature(f[0]))
 
-        s_global = f"global f_original{str(i)}"
-        s_original = f"f_original{str(i)}={s_name}"         # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_global        = f"global f_original{str(i)}\n"
+        s_original      = f"f_original{str(i)}={qualified_name}\n"         # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_def           = f"def f_monkey {signature}:\n"
+        s_try           = f"    try:\n"
+        s_result        = f"        result = f_original{str(i)}{signature}\n"
+        s_extend        = f"        print(f'{datetime.datetime.now()} {qualified_name}{signature_values} =',result, type(result))\n"
+        s_except        = f"    except Exception as e:\n"
+        s_except_text   = f"        print(f'{datetime.datetime.now()} Caught an exception',e, f'in function {qualified_name}')\n"
+        s_raise         = f"        raise e  # raise it again, so the code behavior is not modified\n"
+        s_replace       = f"{qualified_name}=f_monkey\n"
 
-        s_signature = str(inspect.signature(f[0]))
-        s_signature_values = _format_signature(inspect.signature(f[0]))
-
-        s_f_original = f"def f_monkey {s_signature}: \n    result = f_original{str(i)}{s_signature}"
-
-        s_extend_try = f"    try:\n        print(f'{datetime.datetime.now()} {s_name}{s_signature_values} =',result, type(result))"
-        s_extend_exception = '    except Exception as e:\n        print(datetime.datetime.now(),"exception raised while logging", str(e))'
-        s_extend = s_extend_try + '\n' + s_extend_exception
-
-        s_replace = s_name + ' = f_monkey'
-
-        s_execute = s_global + '\n' + s_original + '\n' + s_f_original + '\n' + s_extend+ '\n' + s_replace
+        s_execute = s_global + s_original + s_def + s_try + s_result + s_extend + s_except + s_except_text + s_raise + s_replace
         #print(s_execute)
         exec(s_execute)
 

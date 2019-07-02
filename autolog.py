@@ -18,6 +18,7 @@ import basic
 import basic2
 import inheritance
 import nested
+import new
 
 functions = []
 modules_to_log = []

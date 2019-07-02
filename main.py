@@ -2,11 +2,12 @@ import basic
 import basic2
 import nested
 import inheritance
+import new
 
 import autolog              # if we import this module, then logging is automatically activated
 
-autolog.add_modules( [basic, basic2, nested, inheritance] )
-autolog.exclude_modules([basic])
+autolog.add_modules( [basic, basic2, nested, inheritance, new] )
+autolog.exclude_modules([basic, basic2, nested, inheritance])
 autolog.run()
 
 
@@ -122,5 +123,8 @@ e1.variable_kwargs(a ='A', b ='B', c='C')
 
 
 
+print()
+print("New ------------------------")
+new.add_numbers(3,5)
 
 

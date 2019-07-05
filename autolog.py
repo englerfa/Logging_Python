@@ -11,6 +11,8 @@ No warranties for this module.
 """
 __author__ = ('englerfa', 'karel.kubicek@inf.ethz.ch')
 
+# TODO: document the methods
+
 import inspect                  # module used to retrieve information about functions (such as arguments, return value)
 
 
@@ -33,19 +35,24 @@ class Autolog:
         self._traverse_modules()
         print("Monkey patching done, executing the program")
 
-    def _traverse(self, nodes, depth):
+    def _traverse(self, module, depth):
         """
 
-        :param nodes:
+        :param module:
         :param depth:
         :return:
         """
-        if depth < 0:
+        if depth < 0:  # stop recursion
             return
-        for elem in inspect.getmembers(nodes):
+
+        self.module_import(module)
+        for elem in inspect.getmembers(module):
             if type(elem[1]).__name__ == "function":  # get global functions
-                mod = inspect.getmodule(elem[1])
-                tup = (elem[1], mod.__name__)
+                if elem[1].__qualname__ == 'f_monkey':
+                    continue  # checks for already processed functions to prevent re-inspection
+                functions_mod = inspect.getmodule(elem[1])
+                self.module_import(functions_mod)
+                tup = (elem[1], functions_mod.__name__)
                 if '<' in tup[0].__name__ or '<' in tup[1]:
                     continue  # prevent inspecting invalid paths
                 self._execute_monkey_patching(tup)
@@ -54,23 +61,25 @@ class Autolog:
                 self._traverse(elem[1], depth-1)  # recursion to get nested classes
             elif type(elem[1]).__name__ == "module":
                 print(f'found module elem[1].__name__')
-                self.traverse_mod(elem[1], depth-1)  # recursion to the module
+                self._traverse(elem[1], depth-1)  # recursion to the module
 
     def _traverse_modules(self):
         """
-
-        :return:
+        Traverses all the modules provided to constructor
         """
         for mod in self.modules_to_log:
-            self.traverse_mod(mod, self.recursion_depth)
+            self._traverse(mod, self.recursion_depth)
 
-    def traverse_mod(self, mod, depth):
+    @staticmethod
+    def module_import(mod):
         """
+        Imports necessary submodules of given path
+        :param mod: module to inspect. It will be imported globally from this scope
+        """
+        if type(mod).__name__ != "module":
+            return
 
-        :param mod:
-        :param depth:
-        :return:
-        """
+        # for module a.b.c it 1. `import c from a.b`, 2. `import b from a`, 3. `import a`
         mod_path = mod.__name__.split('.')
         while len(mod_path) > 1:
             command = f'global {mod_path[-1]}\nfrom {".".join(mod_path[:-1])} import {mod_path[-1]}'
@@ -80,7 +89,6 @@ class Autolog:
         command = f'global {mod_path[-1]}\nimport {mod_path[-1]}'
         print(command)
         exec(command)
-        self._traverse(mod, depth)
 
     @staticmethod
     def _format_signature(signature, value=True):
@@ -88,11 +96,15 @@ class Autolog:
 
         :param signature:
         :param value:
-        :return:
+        :return: signature in case the function is patchable, False else
         """
         res = '('
         comma = False  # solution for post fence problem
+
+        param_count = 0
         for sig in signature.parameters:
+            param_count += 1
+
             default = signature.parameters[sig].default
             empty = False
             if type(default) == str:
@@ -108,6 +120,8 @@ class Autolog:
                 default = str(default.__name__)
             else:
                 default = str(default)
+                if '<' in default:  # skip invalid characters (e.g., np._NoValueType resolves to '<no value>'
+                    continue
 
             print('signature attri: ' + signature.parameters[sig].name)
             print('signature value: ' + default)
@@ -121,6 +135,12 @@ class Autolog:
             if value and not empty:
                 res += '=' + default
             comma = True
+
+        if param_count != len(str(signature).split(',')):
+            # example: https://matplotlib.org/3.1.0/_modules/matplotlib/pyplot.html#imshow
+            # function is not patchable, invalid argument
+            return ''
+
         res += ')'
         #print('resulting signature: ' + res)
         return res
@@ -131,13 +151,17 @@ class Autolog:
         :param f:
         :return:
         """
-        s_name = f[1] + "." + f[0].__name__
+        s_name = f[1] + "." + f[0].__qualname__
 
         s_global = f"global f_original{self.patch_id}"
-        s_original = f"f_original{self.patch_id}={s_name}"         # str(i) is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_original = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
 
         s_signature = self._format_signature(inspect.signature(f[0]), value=False)
         s_signature_values = self._format_signature(inspect.signature(f[0]))
+        s_signature_values = s_signature_values.replace('\n', '\\n')  # escape backslashes before execution
+
+        if s_signature_values == '':
+            return  # skip function with invalid signatures
 
         s_f_def = f"def f_monkey{s_signature_values}:"
         s_f_log = f"  print(f\"autolog fun called: {s_name}{s_signature_values}\")"

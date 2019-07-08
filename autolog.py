@@ -168,4 +168,4 @@ class Autolog:
         print(s_execute)
         exec(s_execute)
 
-self.patch_id += 1
+        self.patch_id += 1

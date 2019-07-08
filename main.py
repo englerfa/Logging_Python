@@ -2,6 +2,7 @@ import basic
 import basic2
 import nested
 import inheritance
+<<<<<<< HEAD
 import new
 
 import autolog              # if we import this module, then logging is automatically activated
@@ -126,5 +127,19 @@ e1.variable_kwargs(a ='A', b ='B', c='C')
 print()
 print("New ------------------------")
 new.use_library_functions()
+=======
+import complex_types
+import libuse
 
+from autolog import Autolog
+>>>>>>> library_use
 
+autolog = Autolog([basic, basic2, nested, inheritance, complex_types, libuse])
+autolog.run()  # by running this function, logging is activated
+
+complex_types.run()
+libuse.run()
+basic.run()
+basic2.run()
+nested.run()
+inheritance.run()

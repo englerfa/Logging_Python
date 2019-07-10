@@ -159,8 +159,7 @@ class Autolog:
         s_call      = f"  result = f_original{self.patch_id}{s_signature}"
         s_res       = f"  print(result, type(result))"
         s_ret       = f"  return result"
-
-        s_replace = s_name + ' = f_monkey'
+        s_replace   = f"{s_name}=f_monkey"
 
         s_execute = '\n'.join([s_global, s_original, s_def, s_log, s_call, s_res, s_ret, s_replace])
         print(s_execute)

@@ -156,6 +156,7 @@ class Autolog:
         s_original      = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
         s_def           = f"def f_monkey{s_signature_values}:"
         s_try           = f"    try:"
+        s_timestamp     = f"        print(f'{datetime.datetime.now()}')"
         s_log           = f"        print(f\"autolog fun called: {s_name}{s_signature_values}\")"
         s_call          = f"        result = f_original{self.patch_id}{s_signature}"
         s_res           = f"        print(result, type(result))"
@@ -165,7 +166,7 @@ class Autolog:
         s_raise         = f"        raise e #raise exception again, so the code behavior is not modified"
         s_replace       = f"{s_name}=f_monkey"
 
-        s_execute = '\n'.join([s_global, s_original, s_def, s_try, s_log, s_call, s_res, s_ret, s_except, s_except_text, s_raise, s_replace])
+        s_execute = '\n'.join([s_global, s_original, s_def, s_try, s_timestamp, s_log, s_call, s_res, s_ret, s_except, s_except_text, s_raise, s_replace])
         print(s_execute)
         exec(s_execute)
 

@@ -10,7 +10,7 @@ __author__ = ('englerfa', 'karel.kubicek@inf.ethz.ch')
 # TODO: document the methods
 
 import inspect                  # module used to retrieve information about functions (such as arguments, return value)
-
+import datetime                 # module used with 'exec' command for timestamp. Do not delete even though it seems unused.
 
 class Autolog:
     def __init__(self, list_of_modules, recursion_depth=1):
@@ -152,16 +152,20 @@ class Autolog:
         if s_signature_values == '':
             return  # skip function with invalid signatures
 
-        s_global    = f"global f_original{self.patch_id}"
-        s_original  = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
-        s_def       = f"def f_monkey{s_signature_values}:"
-        s_log       = f"    print(f\"autolog fun called: {s_name}{s_signature_values}\")"
-        s_call      = f"    result = f_original{self.patch_id}{s_signature}"
-        s_res       = f"    print(result, type(result))"
-        s_ret       = f"    return result"
-        s_replace   = f"{s_name}=f_monkey"
+        s_global        = f"global f_original{self.patch_id}"
+        s_original      = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_def           = f"def f_monkey{s_signature_values}:"
+        s_try           = f"    try:"
+        s_log           = f"        print(f\"autolog fun called: {s_name}{s_signature_values}\")"
+        s_call          = f"        result = f_original{self.patch_id}{s_signature}"
+        s_res           = f"        print(result, type(result))"
+        s_ret           = f"        return result"
+        s_except        = f"    except Exception as e:"
+        s_except_text   = f"        print(f'{datetime.datetime.now()} Caught an exception',e, f'in function {s_name}')"
+        s_raise         = f"        raise e #raise exception again, so the code behavior is not modified"
+        s_replace       = f"{s_name}=f_monkey"
 
-        s_execute = '\n'.join([s_global, s_original, s_def, s_log, s_call, s_res, s_ret, s_replace])
+        s_execute = '\n'.join([s_global, s_original, s_def, s_try, s_log, s_call, s_res, s_ret, s_except, s_except_text, s_raise, s_replace])
         print(s_execute)
         exec(s_execute)
 

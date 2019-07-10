@@ -145,10 +145,6 @@ class Autolog:
         :return:
         """
         s_name = f[1] + "." + f[0].__qualname__
-
-        s_global = f"global f_original{self.patch_id}"
-        s_original = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
-
         s_signature = self._format_signature(inspect.signature(f[0]), value=False)
         s_signature_values = self._format_signature(inspect.signature(f[0]))
         s_signature_values = s_signature_values.replace('\n', '\\n')  # escape backslashes before execution
@@ -156,15 +152,17 @@ class Autolog:
         if s_signature_values == '':
             return  # skip function with invalid signatures
 
-        s_f_def = f"def f_monkey{s_signature_values}:"
-        s_f_log = f"  print(f\"autolog fun called: {s_name}{s_signature_values}\")"
-        s_f_call= f"  result = f_original{self.patch_id}{s_signature}"
-        s_f_res = f"  print(result, type(result))"
-        s_f_ret = f"  return result"
+        s_global    = f"global f_original{self.patch_id}"
+        s_original  = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
+        s_def       = f"def f_monkey{s_signature_values}:"
+        s_log       = f"  print(f\"autolog fun called: {s_name}{s_signature_values}\")"
+        s_call      = f"  result = f_original{self.patch_id}{s_signature}"
+        s_res       = f"  print(result, type(result))"
+        s_ret       = f"  return result"
 
         s_replace = s_name + ' = f_monkey'
 
-        s_execute = '\n'.join([s_global, s_original, s_f_def, s_f_log, s_f_call, s_f_res, s_f_ret, s_replace])
+        s_execute = '\n'.join([s_global, s_original, s_def, s_log, s_call, s_res, s_ret, s_replace])
         print(s_execute)
         exec(s_execute)
 

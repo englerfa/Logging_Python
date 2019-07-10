@@ -130,7 +130,8 @@ class Autolog:
                 res += '=' + default
             comma = True
 
-        if param_count != len(str(signature).split(',')):
+        if str(signature) != '()' and param_count != len(str(signature).split(',')):
+            # definitions with no arguments: len(str(signature).split(',')) = 1 and not 0. Therefore str(signature) != '()' is added
             # example: https://matplotlib.org/3.1.0/_modules/matplotlib/pyplot.html#imshow
             # function is not patchable, invalid argument
             return ''

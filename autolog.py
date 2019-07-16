@@ -45,6 +45,8 @@ class Autolog:
             if type(elem[1]).__name__ == "function":  # get global functions
                 if elem[1].__qualname__ == 'f_monkey':
                     continue  # checks for already processed functions to prevent re-inspection
+                if ".<locals>" in elem[1].__qualname__:
+                    continue  # avoid function names like "os._fscodec.<locals>.fsdecode"
                 functions_mod = inspect.getmodule(elem[1])
                 self.module_import(functions_mod)
                 tup = (elem[1], functions_mod.__name__)

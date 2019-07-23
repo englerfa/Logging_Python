@@ -155,6 +155,9 @@ class Autolog:
         if s_signature_values == '':
             return  # skip function with invalid signatures
 
+        if '_get_kwargs' in s_name or '__repr__' in s_name or 'argparse._ActionsContainer._get_handler' in s_name:
+            return # skip functions that caused exceptions in initialization phase of django web shop (https://github.com/awesto/django-shop)
+
         s_global        = f"global f_original{self.patch_id}"
         s_original      = f"f_original{self.patch_id}={s_name}"  # patch_id is needed to create for every function an individual name, otherwise it gets overwritten (point to same reference)
         s_def           = f"def f_monkey{s_signature_values}:"

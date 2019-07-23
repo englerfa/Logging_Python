@@ -142,6 +142,13 @@ class Autolog:
         #print('resulting signature: ' + res)
         return res
 
+    @staticmethod
+    def _ignored_functions(function_names, s_name):
+        for f in function_names:
+            if f in s_name:
+                return True
+        return False
+
     def _execute_monkey_patching(self, f):
         """
         :param f:
@@ -155,7 +162,7 @@ class Autolog:
         if s_signature_values == '':
             return  # skip function with invalid signatures
 
-        if '_get_kwargs' in s_name or '__repr__' in s_name or 'argparse._ActionsContainer._get_handler' in s_name:
+        if self._ignored_functions(['_get_kwargs', '__repr__', 'argparse._ActionsContainer._get_handler'], s_name):
             return # skip functions that caused exceptions in initialization phase of django web shop (https://github.com/awesto/django-shop)
 
         s_global        = f"global f_original{self.patch_id}"

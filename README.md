@@ -7,5 +7,5 @@ We implement automated logging using monkey patching, which replaces existing fu
 * We do not log monkey functions to prevent re-inspection.
 * We do not log inner functions, also called nested functions since module `inspect` does not retrieve them.
 * We do not log lambda functions since since module `inspect` does not retrieve them.
-* We skip methods that have a non-executable signature, e.g., that contain an invalid path. More formally, when an object's built-in method `repr()`, which should return an executable string of the object, returns something with an invalid syntax (e.g., string containing `<, >, ', ", /, \`, ...), we want to skip it.
 * We skip functions that contain the following strings in the signature `<locals>`, `_get_kwargs`, `_\repr__`, and `argparse._ActionsContainer._get_handler`.
+* We skip methods that have a non-executable signature, e.g., that contain an invalid path. More formally, when an object's built-in method `repr()`, which should return an executable string of the object, returns something with an invalid syntax (e.g., string containing `<, >, ', ", /, \`, ...), we want to skip it.

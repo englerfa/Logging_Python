@@ -9,7 +9,7 @@ __author__ = ('englerfa', 'karel.kubicek@inf.ethz.ch')
 
 # TODO: document the methods
 
-import inspect                  # module used to retrieve information about functions (such as arguments, return value)
+import inspect                  # module used to retrieve information about functions (such as signature and arguments)
 
 class Autolog:
     def __init__(self, list_of_modules, recursion_depth=1):

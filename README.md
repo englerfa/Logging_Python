@@ -3,7 +3,7 @@ This repository provides a method to log all method calls automatically. A log s
 We implement automated logging using monkey patching, which replaces existing functions at runtime adding logging statements to it. 
 
 
-## Limitations:
+## Limitations
 * We do not log monkey functions to prevent re-inspection. With monkey functions, we mean the functions that we introduced in this method.
 * We do not log inner functions, also called nested functions. Inner functions are functions defined within other functions. We show a simple example in Figure~\ref{fig:innerfunction}. The reason is that module \texttt{inspect} does not retrieve inner functions since they are invisible outside of its immediately enclosing function. However, if we want to log also inner functions, we show a possible approach to capture inner functions. module \texttt{inspect} offers a method \texttt{getsource()} to retrieve source code. With module \texttt{ast} we can traverse function definitions recursively and retrieve inner functions.
 * Similar to the previous limitation, we do not log lambda functions since \texttt{inspect} does not retrieve them. If we want to retrieve lambda functions, we can also use method \texttt{getsource()} from module \texttt{inspect}.
